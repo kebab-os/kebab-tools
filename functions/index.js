@@ -3,9 +3,7 @@ export async function onRequest() {
     'base64-encode/[text]',
     'base64-decode/[text]',
     'uuid',
-    'timestamp',
-    'md5/[text] (coming soon)',
-    'sha256/[text] (coming soon)'
+    'timestamp'
   ];
   
   return new Response(tools.join('\n'), {
