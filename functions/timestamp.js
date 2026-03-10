@@ -1,5 +1,5 @@
 export async function onRequest() {
-  const timestamp = Math.floor(Date.now() / 1000);
+  const timestamp = Math.floor(Date.now() / 1000) + "\n";
   return new Response(timestamp.toString(), {
     headers: { 'Content-Type': 'text/plain' }
   });
