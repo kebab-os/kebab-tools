@@ -2,4 +2,7 @@
   "name": "kebab-tools",
   "version": "1.0.0",
   "description": "Simple CLI tools via HTTP"
+  "scripts": {
+    "build": "node generate-file-list.js"
+  }
 }
