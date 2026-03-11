@@ -2,7 +2,7 @@ export async function onRequest(context) {
   const { text } = context.params;
   
   try {
-    const decoded = atob(text) + "\n";
+    const decoded = "| " + atob(text) + "\n";
     return new Response(decoded, {
       headers: { 'Content-Type': 'text/plain' }
     });
