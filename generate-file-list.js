@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const dontInclude = ['list.js', 'list.json']; // Exclude the function and its data
+const dontInclude = ['list.js', 'index.js'];
 const functionsDir = './functions';
-const outputDir = './public'; // This MUST match your Cloudflare settings
+const outputDir = './public';
 
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
