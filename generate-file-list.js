@@ -1,21 +1,21 @@
 const fs = require('fs');
 
-// 1. Files you want to exclude from the final array
-const dontInclude = ['list.js', 'index.js']; 
+const dontInclude = ['list.js', 'list.json']; // Exclude the function and its data
+const functionsDir = './functions';
+const outputDir = './public'; // This MUST match your Cloudflare settings
+
+if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+}
 
 try {
-  // 2. Scan the functions directory
-  const files = fs.readdirSync('./functions');
+    const files = fs.readdirSync(functionsDir);
+    const filtered = files.filter(f => !dontInclude.includes(f));
 
-  // 3. Filter out the unwanted ones
-  const filtered = files.filter(file => !dontInclude.includes(file));
-
-  // 4. Save the result into the public folder
-  if (!fs.existsSync('./public')) fs.mkdirSync('./public');
-  fs.writeFileSync('./public/files.json', JSON.stringify(filtered));
-
-  console.log('✅ Created public/files.json with:', filtered);
+    // Save it to the public folder
+    fs.writeFileSync(`${outputDir}/list.json`, JSON.stringify(filtered));
+    console.log(`Successfully generated ${outputDir}/list.json`);
 } catch (err) {
-  console.error('❌ Build failed:', err);
-  process.exit(1);
+    console.error('Error:', err);
+    process.exit(1);
 }
