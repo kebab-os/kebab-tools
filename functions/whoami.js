@@ -8,7 +8,10 @@ export async function onRequest(context) {
     timezone: cf.timezone,
     colo: cf.colo // Data centre code
   };
-  return new Response(JSON.stringify(data, null, 2), {
+  
+  const output = "k| " + JSON.stringify(data, null, 2);
+  
+  return new Response(output, {
     headers: { 'content-type': 'application/json' }
   });
 }
