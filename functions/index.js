@@ -1,10 +1,10 @@
 export async function onRequest() {
   const message = `
-    kebab-tools
-    ================
-    
-    For full list of tools, read /list
-    
+kebab-tools
+================
+
+For full list of tools, read /list
+
   `;
   
   return new Response(message, {
