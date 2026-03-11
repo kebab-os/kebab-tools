@@ -1,12 +1,13 @@
 export async function onRequest() {
-  const tools = [
-    'base64-encode/[text]',
-    'base64-decode/[text]',
-    'uuid',
-    'timestamp'
-  ];
+  const message = `
+    \nkebab-tools
+    \n================
+    \n
+    \nFor full list of tools, read /list
+    \n
+  `;
   
-  return new Response(tools.join('\n'), {
+  return new Response(message, {
     headers: { 'Content-Type': 'text/plain' }
   });
 }
