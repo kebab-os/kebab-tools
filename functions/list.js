@@ -1,10 +1,7 @@
 export async function onRequest(context) {
-  // Access the static JSON file created during build
-  const url = new URL('/files.json', context.request.url);
-  const response = await fetch(url);
-  const data = await response.json();
+  const url = new URL('/list.json', context.request.url);
+  const res = await fetch(url);
+  const data = await res.json();
 
-  return new Response(JSON.stringify({ files: data }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+  return new Response(JSON.stringify(data));
 }
