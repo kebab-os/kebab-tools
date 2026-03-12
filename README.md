@@ -32,4 +32,4 @@ If this doesnt work, [raise an issue](https://github.com/kebab-os/kebab-tools/is
 
 ## License
 
-MIT License
+kebab-tools is under the [MIT License](LICENSE).
