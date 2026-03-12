@@ -1,4 +1,3 @@
-// repeatchar/[text].js
 export async function onRequest(context) {
   const { text } = context.params;
   const [char, times] = text.split(',');
