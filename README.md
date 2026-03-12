@@ -8,7 +8,7 @@
 
 ## What is kebab-tools?
 
-Kebab-tools is a collection of tools that you can curl from the command line terminal. It has lots of useful tools. It is very useful for developers, who dont want to leave the CLI.
+Kebab-tools is a versatile suite of command-line utilities designed for seamless integration into your terminal workflow via curl. Built for developers who value efficiency and minimalism, it eliminates the need to switch between windows or leave the CLI to perform common tasks. Whether you're debugging, formatting data, or managing system operations, kebab-tools provides a fast, dependency-free way to access essential developer resources directly from your shell.
 
 
 ## Get started
