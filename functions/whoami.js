@@ -9,7 +9,7 @@ export async function onRequest(context) {
     colo: cf.colo // Data centre code
   };
   
-  const output = "k| " + JSON.stringify(data, null, 2);
+  const output = "k| " + JSON.stringify(data, null, 2) + "\n";
   
   return new Response(output, {
     headers: { 'content-type': 'application/json' }
