@@ -22,9 +22,15 @@ function buildDiagram(dir, depth = 0) {
         }
 
         const prefix = '--'.repeat(depth);
-        const name = entry.name;
 
-        output += `${prefix}${name}\n`;
+        let displayName = entry.name;
+
+        // Replace file.js → file...
+        if (!entry.isDirectory() && displayName.endsWith('.js')) {
+            displayName = displayName.replace(/\.js$/, '...');
+        }
+
+        output += `${prefix}${displayName}\n`;
 
         if (entry.isDirectory()) {
             output += buildDiagram(fullPath, depth + 1);
@@ -35,8 +41,7 @@ function buildDiagram(dir, depth = 0) {
 }
 
 try {
-    // Build diagram starting inside functions/, but without printing "functions" itself
-    const diagram = buildDiagram(functionsDir, 0);
+    const diagram = buildDiagram(functionsDir);
 
     fs.writeFileSync(`${outputDir}/list.txt`, diagram);
 
