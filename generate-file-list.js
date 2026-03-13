@@ -16,7 +16,6 @@ function buildTree(dir) {
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
 
-    // Skip excluded files
     if (!entry.isDirectory() && dontInclude.includes(entry.name)) {
       continue;
     }
@@ -25,23 +24,23 @@ function buildTree(dir) {
       const folderName = entry.name;
       const children = fs.readdirSync(fullPath);
 
-      // Look for text.js or [text].js
       const textFile = children.find(f => f.endsWith('.js'));
 
       if (textFile) {
-        // Remove .js and remove brackets
-        const clean = textFile.replace(/\.js$/, '').replace(/[
+        const clean = textFile
+          .replace(/\.js$/, '')
+          .replace(/
 
-\[\]
+\[|\]
 
-]/g, '');
+/g, ''); // FIXED REGEX
+
         arr.push({ [folderName]: clean });
       } else {
         arr.push({ [folderName]: buildTree(fullPath) });
       }
 
     } else {
-      // Normal file
       const cleanName = entry.name.replace(/\.js$/, '');
       arr.push({ [cleanName]: null });
     }
@@ -52,7 +51,6 @@ function buildTree(dir) {
 
 try {
   const tree = {};
-
   const top = fs.readdirSync(functionsDir, { withFileTypes: true });
 
   for (const entry of top) {
@@ -66,17 +64,15 @@ try {
     }
   }
 
-  // Pretty outer JSON, readable arrays
   let json = JSON.stringify(tree, null, 2);
 
-  // Make arrays compact but readable
   json = json
     .replace(/
 
-\[\s+\{/g, "[ {")   // start arrays inline
+\[\s+\{/g, "[ {")
     .replace(/\}\s+\]
 
-/g, "} ]");  // end arrays inline
+/g, "} ]");
 
   fs.writeFileSync(`${outputDir}/list.json`, json);
 
