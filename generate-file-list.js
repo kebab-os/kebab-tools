@@ -9,7 +9,6 @@ if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
 }
 
-// Recursively walk directories
 function walk(dir, fileList = []) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
@@ -17,10 +16,12 @@ function walk(dir, fileList = []) {
         const fullPath = path.join(dir, entry.name);
 
         if (entry.isDirectory()) {
-            walk(fullPath, fileList); // recurse into subdirectory
+            walk(fullPath, fileList);
         } else {
             if (!dontInclude.includes(entry.name)) {
-                fileList.push(fullPath.replace(functionsDir + '/', ''));
+                // Normalize and remove the "functions/" prefix
+                const relative = fullPath.replace(path.normalize(functionsDir + path.sep), '');
+                fileList.push(relative);
             }
         }
     }
