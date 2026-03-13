@@ -1,9 +1,9 @@
 export async function onRequest(context) {
-  const url = new URL('/list.txt', context.request.url);
+  const url = new URL('/list.json', context.request.url);
   const res = await fetch(url);
-  const text = await res.text();
+  const data = await res.json();
 
-  return new Response(text, {
-    headers: { 'Content-Type': 'text/plain' }
+  return new Response(JSON.stringify(data, null, 2) + "\n", {
+    headers: { 'Content-Type': 'application/json' }
   });
 }
