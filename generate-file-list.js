@@ -11,7 +11,7 @@ if (!fs.existsSync(outputDir)) {
 
 function buildTree(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
-    const tree = {};
+    const arr = [];
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
@@ -22,20 +22,44 @@ function buildTree(dir) {
         }
 
         if (entry.isDirectory()) {
-            // Folder → nested object
-            tree[entry.name] = buildTree(fullPath);
+            // Folder → array of children
+            arr.push({
+                [entry.name]: buildTree(fullPath)
+            });
         } else {
             // File → remove .js extension
             const cleanName = entry.name.replace(/\.js$/, '');
-            tree[cleanName] = cleanName;
+
+            // If file name matches folder name → return the name instead of null
+            const parentFolder = path.basename(dir);
+
+            if (cleanName === parentFolder) {
+                arr.push({ [cleanName]: cleanName });
+            } else {
+                arr.push({ [cleanName]: null });
+            }
         }
     }
 
-    return tree;
+    return arr;
 }
 
 try {
-    const tree = buildTree(functionsDir);
+    const tree = {};
+
+    // Top-level folders become keys
+    const top = fs.readdirSync(functionsDir, { withFileTypes: true });
+
+    for (const entry of top) {
+        const fullPath = path.join(functionsDir, entry.name);
+
+        if (entry.isDirectory()) {
+            tree[entry.name] = buildTree(fullPath);
+        } else if (!dontInclude.includes(entry.name)) {
+            const cleanName = entry.name.replace(/\.js$/, '');
+            tree[cleanName] = null;
+        }
+    }
 
     fs.writeFileSync(
         `${outputDir}/list.json`,
