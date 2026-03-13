@@ -9,35 +9,39 @@ if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
 }
 
-function walk(dir, fileList = []) {
+function buildDiagram(dir, depth = 0) {
+    let output = '';
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
 
+        // Skip excluded files
+        if (!entry.isDirectory() && dontInclude.includes(entry.name)) {
+            continue;
+        }
+
+        const prefix = '--'.repeat(depth);
+
+        output += `${prefix}${entry.name}\n`;
+
         if (entry.isDirectory()) {
-            walk(fullPath, fileList);
-        } else {
-            if (!dontInclude.includes(entry.name)) {
-                // Normalize and remove the "functions/" prefix
-                const relative = fullPath.replace(path.normalize(functionsDir + path.sep), '');
-                fileList.push(relative);
-            }
+            output += buildDiagram(fullPath, depth + 1);
         }
     }
 
-    return fileList;
+    return output;
 }
 
 try {
-    const allFiles = walk(functionsDir);
+    const diagram = buildDiagram(functionsDir);
 
     fs.writeFileSync(
-        `${outputDir}/list.json`,
-        JSON.stringify(allFiles, null, 2)
+        `${outputDir}/list.txt`,
+        diagram
     );
 
-    console.log(`Successfully generated ${outputDir}/list.json`);
+    console.log(`Successfully generated ${outputDir}/list.txt`);
 } catch (err) {
     console.error('Error:', err);
     process.exit(1);
