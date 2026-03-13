@@ -22,8 +22,9 @@ function buildDiagram(dir, depth = 0) {
         }
 
         const prefix = '--'.repeat(depth);
+        const name = entry.name;
 
-        output += `${prefix}${entry.name}\n`;
+        output += `${prefix}${name}\n`;
 
         if (entry.isDirectory()) {
             output += buildDiagram(fullPath, depth + 1);
@@ -34,12 +35,10 @@ function buildDiagram(dir, depth = 0) {
 }
 
 try {
-    const diagram = buildDiagram(functionsDir);
+    // Build diagram starting inside functions/, but without printing "functions" itself
+    const diagram = buildDiagram(functionsDir, 0);
 
-    fs.writeFileSync(
-        `${outputDir}/list.txt`,
-        diagram
-    );
+    fs.writeFileSync(`${outputDir}/list.txt`, diagram);
 
     console.log(`Successfully generated ${outputDir}/list.txt`);
 } catch (err) {
