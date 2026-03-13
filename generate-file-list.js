@@ -9,9 +9,9 @@ if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
 }
 
-function buildDiagram(dir, depth = 0) {
-    let output = '';
+function buildTree(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const tree = {};
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
@@ -21,31 +21,28 @@ function buildDiagram(dir, depth = 0) {
             continue;
         }
 
-        const prefix = '--'.repeat(depth);
-
-        let displayName = entry.name;
-
-        // Replace file.js → file...
-        if (!entry.isDirectory() && displayName.endsWith('.js')) {
-            displayName = displayName.replace(/\.js$/, '...');
-        }
-
-        output += `${prefix}${displayName}\n`;
-
         if (entry.isDirectory()) {
-            output += buildDiagram(fullPath, depth + 1);
+            // Folder → nested object
+            tree[entry.name] = buildTree(fullPath);
+        } else {
+            // File → remove .js extension
+            const cleanName = entry.name.replace(/\.js$/, '');
+            tree[cleanName] = cleanName;
         }
     }
 
-    return output;
+    return tree;
 }
 
 try {
-    const diagram = buildDiagram(functionsDir);
+    const tree = buildTree(functionsDir);
 
-    fs.writeFileSync(`${outputDir}/list.txt`, diagram);
+    fs.writeFileSync(
+        `${outputDir}/list.json`,
+        JSON.stringify(tree, null, 2)
+    );
 
-    console.log(`Successfully generated ${outputDir}/list.txt`);
+    console.log(`Successfully generated ${outputDir}/list.json`);
 } catch (err) {
     console.error('Error:', err);
     process.exit(1);
