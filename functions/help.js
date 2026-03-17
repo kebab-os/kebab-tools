@@ -16,7 +16,7 @@ export async function onRequest() {
 | a terminal to access kebab-tools.
 | 
 | Report any issues at:
-| https://github.com/kebab-os/kebab-tools/issues
+| https://github.com/kebab-os/kebab-tools/issues\n
 `;
   
   return new Response(message, {
