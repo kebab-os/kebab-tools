@@ -1,7 +1,7 @@
 export async function onRequest(context) {
   const { text } = context.params;
   const count = (text.match(/\s/g) || []).length;
-  return new Response("k| " + count + "\n", {
+  return new Response(count + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

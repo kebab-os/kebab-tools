@@ -5,7 +5,7 @@ export async function onRequest(context) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return new Response("k| " + arr.join('') + "\n", {
+  return new Response(arr.join('') + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

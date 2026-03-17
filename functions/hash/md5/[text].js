@@ -5,7 +5,7 @@ export async function onRequest(context) {
   const hashBuffer = await crypto.subtle.digest('MD5', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  return new Response("k| " + hashHex + "\n", {
+  return new Response(hashHex + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

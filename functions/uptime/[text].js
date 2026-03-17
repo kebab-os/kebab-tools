@@ -18,7 +18,7 @@ export async function onRequest(context) {
       ms: duration
     };
 
-    const output = "k| " + JSON.stringify(data, null, 2);
+    const output = JSON.stringify(data, null, 2);
     
     return new Response(output, {
       headers: { 'Content-Type': 'application/json' }

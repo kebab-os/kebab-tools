@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const [search, ...rest] = text.split(',');
   const str = rest.join(',');
   const idx = str.lastIndexOf(search);
-  return new Response("k| " + idx + "\n", {
+  return new Response(idx + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

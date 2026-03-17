@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const [search, ...rest] = text.split(',');
   const str = rest.join(',');
   const count = (str.match(new RegExp(search, 'g')) || []).length;
-  return new Response("k| " + count + "\n", {
+  return new Response(count + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

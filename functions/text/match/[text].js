@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const [pattern, ...rest] = text.split(',');
   const str = rest.join(',');
   const matches = str.match(new RegExp(pattern, 'g')) || [];
-  return new Response("k| " + matches.join(', ') + "\n", {
+  return new Response(matches.join(', ') + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }
