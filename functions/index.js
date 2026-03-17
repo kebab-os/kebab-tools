@@ -1,6 +1,6 @@
 export async function onRequest() {
   const message = `
-| kebab-tools
+| HOME | kebab-tools
 | ========================================
 | 
 | Welcome to kebab-tools! Use this to
