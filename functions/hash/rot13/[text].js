@@ -4,7 +4,7 @@ export async function onRequest(context) {
     const base = c <= 'Z' ? 65 : 97;
     return String.fromCharCode((c.charCodeAt(0) - base + 13) % 26 + base);
   });
-  return new Response("k| " + rot13 + "\n", {
+  return new Response(rot13 + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

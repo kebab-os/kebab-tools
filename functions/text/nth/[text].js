@@ -4,7 +4,7 @@ export async function onRequest(context) {
   const index = parseInt(n) || 0;
   const parts = rest.join(',').split(',');
   const item = parts[index] || '';
-  return new Response("k| " + item.trim() + "\n", {
+  return new Response(item.trim() + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

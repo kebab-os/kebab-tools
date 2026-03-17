@@ -3,7 +3,7 @@ export async function onRequest(context) {
   const [search, ...rest] = text.split(',');
   const str = rest.join(',');
   const result = str.includes(search) ? 'yes' : 'no';
-  return new Response("k| " + result + "\n", {
+  return new Response(result + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

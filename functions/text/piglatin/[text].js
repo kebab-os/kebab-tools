@@ -8,7 +8,7 @@ export async function onRequest(context) {
     if (i === -1) return word + 'ay';
     return word.slice(i) + word.slice(0, i) + 'ay';
   }).join(' ');
-  return new Response("k| " + pig + "\n", {
+  return new Response(pig + "\n", {
     headers: { 'Content-Type': 'text/plain' }
   });
 }

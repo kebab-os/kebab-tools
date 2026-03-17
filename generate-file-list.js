@@ -29,11 +29,7 @@ function buildTree(dir) {
       if (textFile) {
         const clean = textFile
           .replace(/\.js$/, '')
-          .replace(/
-
-\[|\]
-
-/g, ''); // FIXED REGEX
+          .replace(/\[|\]/g, '');
 
         arr.push({ [folderName]: clean });
       } else {
@@ -67,12 +63,8 @@ try {
   let json = JSON.stringify(tree, null, 2);
 
   json = json
-    .replace(/
-
-\[\s+\{/g, "[ {")
-    .replace(/\}\s+\]
-
-/g, "} ]");
+    .replace(/\[\s+\{/g, "[ {")
+    .replace(/\}\s+\]/g, "} ]");
 
   fs.writeFileSync(`${outputDir}/list.json`, json);
 

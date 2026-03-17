@@ -11,5 +11,5 @@ export async function onRequest(context) {
     password += charset[array[i] % charset.length];
   }
 
-  return new Response("k| "+ password + "\n");
+  return new Response(password + "\n");
 }
