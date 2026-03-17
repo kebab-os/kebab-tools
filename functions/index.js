@@ -12,7 +12,7 @@ export async function onRequest() {
 | 
 | For full list of tools, read /list\n
 | 
-|                       © kebab-tools 2026
+|                         kebab-tools 2026
 `;
   
   return new Response(message, {
