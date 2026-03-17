@@ -1,0 +1,209 @@
+{
+  "base64": [ {
+      "decode": "text"
+    },
+    {
+      "encode": "text"
+    } ],
+  "binary": [ {
+      "decode": "text"
+    },
+    {
+      "encode": "text"
+    } ],
+  "case": [ {
+      "camel": "text"
+    },
+    {
+      "kebab": "text"
+    },
+    {
+      "lower": "text"
+    },
+    {
+      "slug": "text"
+    },
+    {
+      "snake": "text"
+    },
+    {
+      "upper": "text"
+    } ],
+  "data": [ {
+      "cf-location": null
+    },
+    {
+      "user-agent": null
+    },
+    {
+      "whoami": null
+    } ],
+  "echo": [ {
+      "[text]": null
+    } ],
+  "hash": [ {
+      "md5": "text"
+    },
+    {
+      "rot13": "text"
+    },
+    {
+      "sha256": "text"
+    } ],
+  "hex": [ {
+      "decode": "text"
+    },
+    {
+      "encode": "text"
+    } ],
+  "letters": [ {
+      "consonants": "text"
+    },
+    {
+      "vowel": "text"
+    } ],
+  "qr-code": [ {
+      "[text]": null
+    } ],
+  "random": [ {
+      "ascii-face": null
+    },
+    {
+      "card": null
+    },
+    {
+      "coin-flip": null
+    },
+    {
+      "dec": null
+    },
+    {
+      "dice": null
+    },
+    {
+      "hex": null
+    },
+    {
+      "int": null
+    },
+    {
+      "password": null
+    },
+    {
+      "uuid": null
+    } ],
+  "text": [ {
+      "alternate": "text"
+    },
+    {
+      "count": "text"
+    },
+    {
+      "digits": "text"
+    },
+    {
+      "ends": "text"
+    },
+    {
+      "first": "text"
+    },
+    {
+      "includes": "text"
+    },
+    {
+      "index": "text"
+    },
+    {
+      "join": "text"
+    },
+    {
+      "last": "text"
+    },
+    {
+      "lastindex": "text"
+    },
+    {
+      "leet": "text"
+    },
+    {
+      "length": "text"
+    },
+    {
+      "lines": "text"
+    },
+    {
+      "match": "text"
+    },
+    {
+      "mirror": "text"
+    },
+    {
+      "nth": "text"
+    },
+    {
+      "pad": "text"
+    },
+    {
+      "piglatin": "text"
+    },
+    {
+      "repeat": "text"
+    },
+    {
+      "repeatchar": "text"
+    },
+    {
+      "replace": "text"
+    },
+    {
+      "reverse": "text"
+    },
+    {
+      "rsort": "text"
+    },
+    {
+      "shuffle": "text"
+    },
+    {
+      "slice": "text"
+    },
+    {
+      "sort": "text"
+    },
+    {
+      "spaces": "text"
+    },
+    {
+      "split": "text"
+    },
+    {
+      "starts": "text"
+    },
+    {
+      "substr": "text"
+    },
+    {
+      "trim": "text"
+    },
+    {
+      "unique": "text"
+    },
+    {
+      "words": "text"
+    } ],
+  "time": [ {
+      "hash": null
+    },
+    {
+      "seconds-since-epoch": null
+    } ],
+  "timestamp": [ {
+      "base64": null
+    },
+    {
+      "iso": null
+    } ],
+  "uptime": [ {
+      "[text]": null
+    } ]
+}
