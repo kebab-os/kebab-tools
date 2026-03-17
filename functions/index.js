@@ -10,9 +10,9 @@ export async function onRequest() {
 | Example usage:
 | curl https://tools.kebabos.me/random/int
 | 
-| For full list of tools, read /list\n
+| For full list of tools, read /list
 | 
-|                         kebab-tools 2026
+|                         kebab-tools 2026\n
 `;
   
   return new Response(message, {
