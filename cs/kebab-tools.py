@@ -1,6 +1,6 @@
 import requests
 def run_tools_cli():
-    print("kebab-tools client shell (Press Ctrl+Z to exit)")
+    print("\nkebab-tools client shell (Press Ctrl+Z to exit)")
     while True:
         try:
             user_input = input("> ").strip()
