@@ -25,7 +25,7 @@ If that doesnt work, try our secondary domain:
 curl https://kebab-tools.pages.dev
 ```
 
-2. If you want to view all the tool directories, run `/list` after the curl command.
+2. To view help, use the `/help` endpoint, or use `help/[page #]` to view certain sections. Use the `/list` endpoint to view a json list of all the tools.
 
 If this doesnt work, [raise an issue](https://github.com/kebab-os/kebab-tools/issues/new/choose) to help support the project.
 
