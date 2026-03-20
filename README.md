@@ -48,6 +48,14 @@ Following these steps should launch the client shell.
 To help improve kebab-tools, contributing to this repository would be appriciated. To help us fix bugs, [create an issue](https://github.com/kebab-os/kebab-tools/issues/new/choose) to make kebab-tools free of any bugs.
 
 
+## Contributors
+
+As of `20/03/2026`, these are the contributors for kebab-tools:
+
+- @7aimez - 7ames
+- @ethembeldagli - Ethem Beldagli
+
+
 ## License
 
 kebab-tools is under the [MIT License](LICENSE).
