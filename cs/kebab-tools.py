@@ -9,7 +9,7 @@ def run_tools_cli():
             if not user_input:
                 continue
             formatted_endpoint = user_input.replace(" ", "/")
-            url = f"https://tools.kebabos.me{formatted_endpoint}"
+            url = f"https://tools.kebabos.me/{formatted_endpoint}"
             response = requests.get(url, headers={"User-Agent": "curl/7.81.0"}, timeout=10)
             print(response.text.rstrip())
         except KeyboardInterrupt:
