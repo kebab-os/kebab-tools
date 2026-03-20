@@ -52,7 +52,7 @@ To help improve kebab-tools, contributing to this repository would be appriciate
 
 As of `20/03/2026`, these are the contributors for kebab-tools:
 
-- [@7aimez(https://github.com/7aimez) - 7ames
+- [@7aimez](https://github.com/7aimez) - 7ames
 - [@ethembeldagli](https://github.com/ethembeldagli) - Ethem Beldagli
 
 
