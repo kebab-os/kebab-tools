@@ -1,18 +1,16 @@
 export async function onRequest() {
   const message = `
-| HOME | kebab-tools
-| ========================================
-| 
-| Welcome to kebab-tools! Use this to
-| easily access tools straight from your
-| terminal, or the web.
-| 
-| Example usage:
-| curl https://tools.kebabos.me/random/int
-| 
-| For full list of tools, read /list
-| 
-|                         kebab-tools 2026\n
+HOME | kebab-tools
+========================================
+
+Welcome to kebab-tools! Use this to easily access tools straight from your
+terminal, or the web.
+
+Example usage: 'curl https://tools.kebabos.me/random/int'
+For full list of tools, read '/list'
+
+---
+kebab-tools 2026\n
 `;
   
   return new Response(message, {
