@@ -5,114 +5,230 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>kebab-tools | Web Shell</title>
   <style>
-    :root {
-      --bg: #0b0b0b;
-      --fg: #e6e6e6;
-      --muted: #a8a8a8;
-      --prompt: #50fa7b;
-      --err: #ff5555;
-      --border: #222;
-      --sel: #1f1f1f;
-      --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    :root{
+      --bg:#0b0c0f;
+      --panel:#0f1117;
+      --fg:#e8eaf0;
+      --muted:#98a2b3;
+      --accent:#7c5cff;
+      --err:#ff4d4d;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
 
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 30% -10%, rgba(124,92,255,.18), transparent 60%),
+                  radial-gradient(900px 500px at 90% 10%, rgba(124,92,255,.10), transparent 55%),
+                  var(--bg);
+      color:var(--fg);
       font-family: var(--font);
     }
 
-    /* Layout */
-    .wrap {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+    .shell{
+      height:100%;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      padding:16px;
     }
 
-    header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 12px;
-      user-select: none;
+    .frame{
+      width:min(980px, 100%);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(8px);
     }
 
-    #screen {
-      flex: 1;
-      overflow: auto;
-      padding: 14px 16px 8px 16px;
-      white-space: pre-wrap;
-      word-break: break-word;
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+      background: rgba(15,17,23,.55);
+      user-select:none;
     }
 
-    /* Lines */
-    .line { display: block; }
-    .line.err { color: var(--err); }
-    .line.dim { color: var(--muted); }
-    .line.cmd { color: var(--fg); }
-
-    /* Input row */
-    .inputRow {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      padding: 10px 16px 14px 16px;
-      border-top: 1px solid var(--border);
-      background: rgba(0,0,0,0.15);
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
     }
 
-    .prompt {
-      color: var(--prompt);
-      font-weight: 700;
-      user-select: none;
+    .dotrow{ display:flex; gap:6px; }
+    .dot{ width:10px; height:10px; border-radius:50%; opacity:.7; }
+    .dot.r{ background:#ff5f57; }
+    .dot.y{ background:#febc2e; }
+    .dot.g{ background:#28c840; }
+
+    .title{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    /* Use a textarea so we can support multi-line paste cleanly */
-    #input {
-      flex: 1;
-      background: transparent;
-      border: 0;
-      outline: none;
-      resize: none;
-      padding: 0;
-      margin: 0;
+    .hint{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .hint kbd{
+      font-family:inherit;
+      font-size:11px;
+      padding:2px 6px;
+      border:1px solid var(--border);
+      border-bottom-color: rgba(255,255,255,.14);
+      border-radius:7px;
+      background: rgba(0,0,0,.18);
+      color: var(--fg);
+    }
+
+    #screen{
+      flex:1;
+      padding:14px 16px 10px 16px;
+      overflow:auto;
+      white-space:pre-wrap;
+      word-break:break-word;
+      background: rgba(0,0,0,.10);
+    }
+
+    .line{ display:block; }
+    .line.dim{ color:var(--muted); }
+    .line.err{ color:var(--err); }
+    .line.cmd{ color:var(--fg); }
+
+    .inputbar{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      padding:10px 12px 12px 12px;
+      border-top:1px solid var(--border);
+      background: rgba(15,17,23,.55);
+    }
+
+    .prompt{
+      color: rgba(232,234,240,.9);
+      font-weight:700;
+      padding:6px 6px 6px 8px;
+      border-radius:10px;
+      background: rgba(124,92,255,.10);
+      border:1px solid rgba(124,92,255,.25);
+      line-height:1;
+      user-select:none;
+    }
+
+    #input{
+      flex:1;
+      min-height: 34px;
+      max-height: 140px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
       color: var(--fg);
       font: inherit;
-      line-height: 1.25;
-      height: 1.25em; /* single-line look */
-      overflow: hidden;
-      caret-color: var(--fg);
+      line-height:1.25;
+      outline:none;
+      resize:none;
+      overflow:auto;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
     }
+    #input:focus{
+      border-color: rgba(124,92,255,.45);
+      box-shadow: 0 0 0 3px rgba(124,92,255,.18);
+    }
+    #input:disabled{ opacity:.55; }
 
-    /* Make selection look terminal-ish */
-    ::selection { background: var(--sel); }
+    ::selection{ background: rgba(124,92,255,.22); }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      kebab-tools web shell — uses a Pages Function proxy at <code>/shell-proxy</code>
-    </header>
+  <div class="shell">
+    <div class="frame" role="application" aria-label="kebab-tools web shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="dotrow" aria-hidden="true">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          </div>
+          <div class="title" id="titleText">kebab-tools | Web Shell</div>
+        </div>
+        <div class="hint">
+          history: <kbd>↑</kbd>/<kbd>↓</kbd> · run: <kbd>Enter</kbd> · newline: <kbd>Shift</kbd>+<kbd>Enter</kbd>
+        </div>
+      </div>
 
-    <div id="screen" aria-live="polite" aria-label="Terminal output"></div>
+      <div id="screen" aria-live="polite" aria-label="Terminal output"></div>
 
-    <div class="inputRow">
-      <div class="prompt">&gt;</div>
-      <textarea id="input" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+      <div class="inputbar">
+        <div class="prompt">&gt;</div>
+        <textarea id="input" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Command input"></textarea>
+      </div>
     </div>
   </div>
 
   <script>
+    // Uses your Cloudflare Pages Function proxy: functions/shell-proxy.js -> /shell-proxy
     const PROXY_ENDPOINT = "/shell-proxy";
+
     const screen = document.getElementById("screen");
     const input = document.getElementById("input");
+    const titleText = document.getElementById("titleText");
 
     let busy = false;
 
+    // --- Command history (memory) ---
+    const HISTORY_KEY = "kebabtools:webshell:history:v1";
+    const HISTORY_MAX = 200;
+
+    let history = loadHistory();     // array of strings
+    let histIndex = history.length;  // points "one past end" when not browsing
+    let draft = "";                  // current in-progress text before user pressed ↑
+
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr.filter(v => typeof v === "string") : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveHistory() {
+      try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-HISTORY_MAX)));
+      } catch {
+        // ignore (private mode / storage blocked)
+      }
+    }
+
+    function pushHistory(cmd) {
+      // Avoid storing empties; also avoid duplicate consecutive entries
+      if (!cmd) return;
+      const last = history[history.length - 1];
+      if (last === cmd) return;
+      history.push(cmd);
+      if (history.length > HISTORY_MAX) history = history.slice(-HISTORY_MAX);
+      saveHistory();
+      histIndex = history.length;
+    }
+
+    // --- UI helpers ---
     function addLine(text, className = "line") {
-      // Keep *exact* output formatting; split into lines and append each
       const parts = String(text).split("\n");
       for (const p of parts) {
         const div = document.createElement("div");
@@ -120,26 +236,27 @@
         div.textContent = p;
         screen.appendChild(div);
       }
-      // Scroll to bottom
       screen.scrollTop = screen.scrollHeight;
     }
 
     function setBusy(state) {
       busy = state;
       input.disabled = state;
-      // keep focus behavior consistent
       if (!state) queueMicrotask(() => input.focus());
     }
 
+    function autosize() {
+      // keep textarea minimal but allow multiline paste/edit
+      input.style.height = "0px";
+      const h = Math.min(input.scrollHeight, 140);
+      input.style.height = Math.max(h, 34) + "px";
+    }
+
     async function proxyGet(path) {
-      // path is like: "version" or "help" or "hash/md5/hello"
       const url = `${PROXY_ENDPOINT}?path=${encodeURIComponent(path)}`;
       const res = await fetch(url, { method: "GET" });
       const text = await res.text();
-      if (!res.ok) {
-        // Preserve body text so errors from function/server show
-        throw new Error(text || `HTTP ${res.status}`);
-      }
+      if (!res.ok) throw new Error(text || `HTTP ${res.status}`);
       return text;
     }
 
@@ -147,14 +264,14 @@
       setBusy(true);
       try {
         const ver = (await proxyGet("version")).trim();
+        titleText.textContent = `kebab-tools ${ver} | Web Shell`;
 
-        // Match your Python banner closely (Ctrl+Z note is a terminal concept, but keep text)
         addLine("");
-        addLine(`kebab-tools ${ver} | Client Shell (Use Ctrl+Z to exit)`, "line");
-        addLine("Type 'help', 'license', 'about' or 'copyright' for more information.", "line");
+        addLine(`kebab-tools ${ver} | Client Shell (Use Ctrl+Z to exit)`);
+        addLine("Type 'help', 'license', 'about' or 'copyright' for more information.");
       } catch (e) {
         addLine(`An error occurred: ${e.message}`, "line err");
-        addLine("Make sure you deployed functions/shell-proxy.js and it is reachable at /shell-proxy.", "line dim");
+        addLine("Check that /shell-proxy exists (functions/shell-proxy.js) and is deployed.", "line dim");
       } finally {
         setBusy(false);
       }
@@ -164,16 +281,18 @@
       const cmd = raw.trim();
       if (!cmd) return;
 
-      // Echo command like a shell
+      // record history first (like a real shell)
+      pushHistory(cmd);
+
+      // echo command
       addLine(`> ${cmd}`, "line cmd");
 
-      // Python: f = i.replace(" ", "/")
+      // Python behavior: replace spaces with /
       const path = cmd.replace(/ /g, "/");
 
       setBusy(true);
       try {
         const out = await proxyGet(path);
-        // Python: print(r.text.rstrip())
         addLine(out.replace(/\s+$/g, ""), "line");
       } catch (e) {
         addLine(`An error occurred: ${e.message}`, "line err");
@@ -182,24 +301,74 @@
       }
     }
 
-    // Enter submits; Shift+Enter allows newline (useful for paste/edit, though Python input() is single line)
+    // --- Key handling: Enter + history up/down ---
     input.addEventListener("keydown", async (e) => {
+      // Submit (single line like Python input()) unless Shift+Enter
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         if (busy) return;
 
         const value = input.value;
         input.value = "";
+        autosize();
+
+        // reset history browsing state
+        histIndex = history.length;
+        draft = "";
+
         await runCommand(value);
+        return;
+      }
+
+      // History: Up / Down (only when caret is on first/last line, to not break multiline editing)
+      if ((e.key === "ArrowUp" || e.key === "ArrowDown") && !e.altKey && !e.ctrlKey && !e.metaKey) {
+        const v = input.value;
+        const caret = input.selectionStart ?? v.length;
+
+        const before = v.slice(0, caret);
+        const after = v.slice(caret);
+
+        const isFirstLine = !before.includes("\n");
+        const isLastLine = !after.includes("\n");
+
+        if (e.key === "ArrowUp" && isFirstLine) {
+          e.preventDefault();
+          if (history.length === 0) return;
+
+          if (histIndex === history.length) draft = input.value; // save draft on first browse
+          histIndex = Math.max(0, histIndex - 1);
+          input.value = history[histIndex] ?? "";
+          autosize();
+          // move caret to end
+          input.selectionStart = input.selectionEnd = input.value.length;
+          return;
+        }
+
+        if (e.key === "ArrowDown" && isLastLine) {
+          e.preventDefault();
+          if (history.length === 0) return;
+
+          histIndex = Math.min(history.length, histIndex + 1);
+          if (histIndex === history.length) {
+            input.value = draft; // restore draft
+          } else {
+            input.value = history[histIndex] ?? "";
+          }
+          autosize();
+          input.selectionStart = input.selectionEnd = input.value.length;
+          return;
+        }
       }
     });
 
-    // Keep focus terminal-like
+    input.addEventListener("input", autosize);
+
     document.addEventListener("click", () => {
       if (!busy) input.focus();
     });
 
     // Start
+    autosize();
     initBanner();
     input.focus();
   </script>
