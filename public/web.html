@@ -3,27 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>kebab-tools</title>
-  <!-- Lucide Icons -->
+  <title>kebab-tools | Web Shell</title>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
       --bg: #ffffff;
       --fg: #171717;
-      --sub: #a3a3a3;
-      --border: #f0f0f0;
-      --panel: #fafafa;
+      --sub: #9ca3af;
+      --border: #f3f4f6;
+      --panel: #f9fafb;
       --accent: #000000;
       --font: "Inter", -apple-system, system-ui, sans-serif;
       --mono: "JetBrains Mono", "SF Mono", monospace;
     }
 
     [data-theme="dark"] {
-      --bg: #050505;
-      --fg: #eeeeee;
+      --bg: #0a0a0a;
+      --fg: #e5e5e5;
       --sub: #525252;
-      --border: #171717;
-      --panel: #0a0a0a;
+      --border: #1a1a1a;
+      --panel: #111111;
       --accent: #ffffff;
     }
 
@@ -38,7 +37,6 @@
       flex-direction: column;
     }
 
-    /* Minimal Nav */
     nav {
       padding: 0.75rem 1.25rem;
       display: flex;
@@ -46,8 +44,8 @@
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
-    .brand { font-size: 13px; font-weight: 600; color: var(--sub); display: flex; align-items: center; gap: 6px; }
-    .brand span { color: var(--fg); }
+    .brand { font-size: 13px; font-weight: 500; color: var(--sub); }
+    .brand span { color: var(--fg); font-weight: 600; }
     .actions { display: flex; gap: 8px; }
 
     button.icon-btn {
@@ -62,7 +60,6 @@
     }
     button.icon-btn:hover { color: var(--accent); background: var(--panel); }
 
-    /* Terminal Output */
     #output {
       flex: 1;
       overflow-y: auto;
@@ -71,23 +68,30 @@
       font-size: 13px;
       line-height: 1.5;
     }
-    .entry { margin-bottom: 0.75rem; }
-    .cmd-line { display: flex; gap: 8px; color: var(--sub); font-weight: 500; }
-    .cmd-line .prompt { color: var(--sub); flex-shrink: 0; }
-    .cmd-line .text { color: var(--fg); }
+    .entry { margin-bottom: 1.25rem; }
+    
+    /* Command Line: Smaller and lighter gray */
+    .cmd-line { 
+      display: flex; 
+      gap: 6px; 
+      color: var(--sub); 
+      font-size: 11px; 
+      margin-bottom: 2px;
+      text-transform: lowercase;
+    }
+    .cmd-line .prompt { opacity: 0.7; }
+
+    /* Response: Normal size and color */
     .response-text { 
-      padding-left: 18px; 
       color: var(--fg); 
       white-space: pre-wrap; 
-      margin-top: 2px;
-      opacity: 0.9;
+      opacity: 1;
     }
-    .error { color: #ef4444 !important; }
+    .error { color: #f87171 !important; }
 
-    /* Minimal Input bar */
     .input-area {
       padding: 1rem 1.5rem 1.5rem;
-      max-width: 700px;
+      max-width: 600px;
       margin: 0 auto;
       width: 100%;
     }
@@ -96,28 +100,27 @@
       align-items: center;
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 0 12px;
       gap: 10px;
     }
-    .field span { color: var(--sub); font-family: var(--mono); font-weight: bold; }
+    .field span { color: var(--sub); font-family: var(--mono); font-size: 12px; }
     #cmd-input {
       flex: 1;
       background: none;
       border: none;
       color: var(--fg);
       font-family: var(--mono);
-      font-size: 14px;
-      padding: 12px 0;
+      font-size: 13px;
+      padding: 10px 0;
       outline: none;
     }
 
-    /* Modal */
     .modal-wrap {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -126,13 +129,13 @@
     .modal {
       background: var(--bg);
       border: 1px solid var(--border);
-      width: 280px;
+      width: 260px;
       border-radius: 12px;
       padding: 1.25rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-    .modal h4 { margin: 0 0 1rem; font-size: 14px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
-    .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 13px; }
+    .modal h4 { margin: 0 0 1rem; font-size: 12px; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+    .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 13px; }
     .row:not(:last-child) { border-bottom: 1px solid var(--border); }
 
     #output::-webkit-scrollbar { width: 0; }
@@ -141,10 +144,10 @@
 <body data-theme="dark">
 
   <nav>
-    <div class="brand"><span>kebab-tools</span> / shell</div>
+    <div class="brand"><span>kebab</span> tools</div>
     <div class="actions">
-      <button class="icon-btn" onclick="toggleTheme()"><i data-lucide="sun" id="t-icon" size="16"></i></button>
-      <button class="icon-btn" onclick="toggleModal()"><i data-lucide="settings-2" size="16"></i></button>
+      <button class="icon-btn" onclick="toggleTheme()"><i data-lucide="sun" id="t-icon" size="15"></i></button>
+      <button class="icon-btn" onclick="toggleModal()"><i data-lucide="settings" size="15"></i></button>
     </div>
   </nav>
 
@@ -153,7 +156,7 @@
   <div class="input-area">
     <div class="field">
       <span>&gt;</span>
-      <input type="text" id="cmd-input" placeholder="Type a command..." autofocus autocomplete="off" spellcheck="false">
+      <input type="text" id="cmd-input" placeholder="cmd..." autofocus autocomplete="off" spellcheck="false">
     </div>
   </div>
 
@@ -162,7 +165,7 @@
       <h4>Settings</h4>
       <div class="row">
         <span>History</span>
-        <button class="icon-btn" onclick="clearHist()"><i data-lucide="trash" size="14"></i></button>
+        <button class="icon-btn" onclick="clearHist()"><i data-lucide="trash-2" size="14"></i></button>
       </div>
       <div class="row">
         <span>Version</span>
@@ -195,14 +198,12 @@
     async function run(cmd) {
       if (!cmd.trim()) return;
       
-      // Memory
       if (history[history.length - 1] !== cmd) {
         history.push(cmd);
         localStorage.setItem('kb_h', JSON.stringify(history));
       }
       hIdx = history.length;
 
-      // Python logic: space -> /
       const path = cmd.replace(/ /g, "/");
 
       try {
@@ -255,7 +256,7 @@
         const v = await r.text();
         const ver = v.trim();
         document.getElementById('v-label').textContent = ver;
-        addEntry('version', `kebab-tools ${ver} | Client Shell`);
+        addEntry('version', `kebab-tools ${ver}`);
       } catch {
         addEntry('system', 'Connection failed.', true);
       }
