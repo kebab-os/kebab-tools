@@ -26,7 +26,7 @@
       --accent: #ffffff;
     }
 
-    * { box-sizing: border-box; transition: background 0.15s, color 0.15s; }
+    * { box-sizing: border-box; transition: background 0.1s, color 0.1s; }
     body {
       margin: 0;
       background: var(--bg);
@@ -35,6 +35,7 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     nav {
@@ -113,7 +114,6 @@
       outline: none;
     }
 
-    /* Modal Styling */
     .modal-wrap {
       position: fixed;
       inset: 0;
@@ -136,7 +136,6 @@
     .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 13px; }
     .row:not(:last-child) { border-bottom: 1px solid var(--border); }
     
-    /* Toggle Switch */
     .switch {
       position: relative;
       display: inline-block;
@@ -172,7 +171,9 @@
   <nav>
     <div class="brand"><span>kebab</span> tools</div>
     <div class="actions">
-      <button class="icon-btn" onclick="toggleTheme()"><i data-lucide="sun" id="t-icon" size="15"></i></button>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">
+        <i data-lucide="sun" id="t-icon" size="15"></i>
+      </button>
       <button class="icon-btn" onclick="toggleModal()"><i data-lucide="settings" size="15"></i></button>
     </div>
   </nav>
@@ -201,7 +202,7 @@
       <div class="row">
         <span>Auto-Focus Input</span>
         <label class="switch">
-          <input type="checkbox" id="focus-toggle" checked onchange="updatePref('autoFocus', this.checked)">
+          <input type="checkbox" id="focus-toggle" onchange="updatePref('autoFocus', this.checked)">
           <span class="slider"></span>
         </label>
       </div>
@@ -209,7 +210,7 @@
       <div class="row">
         <span>Monospace Font</span>
         <label class="switch">
-          <input type="checkbox" id="font-toggle" checked onchange="updatePref('monoFont', this.checked)">
+          <input type="checkbox" id="font-toggle" onchange="updatePref('monoFont', this.checked)">
           <span class="slider"></span>
         </label>
       </div>
@@ -231,21 +232,31 @@
     const input = document.getElementById('cmd-input');
     const PROXY = "/shell-proxy";
     
-    // Load Settings
+    // Default Settings
     let settings = JSON.parse(localStorage.getItem('kb_settings')) || {
       singleMode: false,
       autoFocus: true,
-      monoFont: true
+      monoFont: true,
+      theme: 'dark'
     };
 
     let history = JSON.parse(localStorage.getItem('kb_h') || '[]');
     let hIdx = history.length;
 
     function applySettings() {
+      // Apply Preferences to UI
       document.getElementById('mode-toggle').checked = settings.singleMode;
       document.getElementById('focus-toggle').checked = settings.autoFocus;
       document.getElementById('font-toggle').checked = settings.monoFont;
       output.style.fontFamily = settings.monoFont ? 'var(--mono)' : 'var(--font)';
+      
+      // Apply Theme
+      document.body.setAttribute('data-theme', settings.theme);
+      const tIcon = document.getElementById('t-icon');
+      if (tIcon) {
+        tIcon.setAttribute('data-lucide', settings.theme === 'dark' ? 'sun' : 'moon');
+        lucide.createIcons();
+      }
     }
 
     function updatePref(key, val) {
@@ -254,34 +265,32 @@
       applySettings();
     }
 
+    function toggleTheme() {
+      const newTheme = settings.theme === 'dark' ? 'light' : 'dark';
+      updatePref('theme', newTheme);
+    }
+
     function addEntry(cmd, response, isError = false) {
-      if (settings.singleMode) {
-        output.innerHTML = '';
-      }
+      if (settings.singleMode) output.innerHTML = '';
 
       const entry = document.createElement('div');
       entry.className = 'entry';
-      
       entry.innerHTML = `
         <div class="cmd-line"><span class="prompt">&gt;</span><span class="text">${cmd}</span></div>
         <div class="response-text ${isError ? 'error' : ''}">${response}</div>
       `;
-      
       output.appendChild(entry);
       output.scrollTop = output.scrollHeight;
     }
 
     async function run(cmd) {
       if (!cmd.trim()) return;
-      
       if (history[history.length - 1] !== cmd) {
         history.push(cmd);
         localStorage.setItem('kb_h', JSON.stringify(history));
       }
       hIdx = history.length;
-
       const path = cmd.replace(/ /g, "/");
-
       try {
         const res = await fetch(`${PROXY}?path=${encodeURIComponent(path)}`);
         const data = await res.text();
@@ -306,21 +315,13 @@
       }
     });
 
-    function toggleTheme() {
-      const b = document.body;
-      const isD = b.getAttribute('data-theme') === 'dark';
-      b.setAttribute('data-theme', isD ? 'light' : 'dark');
-      document.getElementById('t-icon').setAttribute('data-lucide', isD ? 'moon' : 'sun');
-      lucide.createIcons();
-    }
-
     function toggleModal() {
       const m = document.getElementById('modal');
       m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
     }
 
     function clearHist() {
-      if(confirm('Clear all command history?')) {
+      if(confirm('Clear history?')) {
         history = [];
         localStorage.removeItem('kb_h');
         hIdx = 0;
@@ -341,7 +342,7 @@
         const v = await r.text();
         const ver = v.trim();
         document.getElementById('v-label').textContent = ver;
-        addEntry('initialization', `kebab-tools ${ver}`);
+        addEntry('version', `kebab-tools ${ver}`);
       } catch {
         addEntry('system', 'Connection failed.', true);
       }
