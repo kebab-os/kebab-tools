@@ -1,6 +1,6 @@
 {
   "name": "kebab-tools",
-  "description": "API tools via HTTP",
+  "description": "Command line tools via HTTP",
   "scripts": {
     "build": "node generate-file-list.js"
   }
