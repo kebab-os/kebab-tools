@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>kebab-tools | Web Shell</title>
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --fg: #e6e6e6;
+      --muted: #a8a8a8;
+      --prompt: #50fa7b;
+      --err: #ff5555;
+      --border: #222;
+      --sel: #1f1f1f;
+      --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+    }
+
+    /* Layout */
+    .wrap {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    #screen {
+      flex: 1;
+      overflow: auto;
+      padding: 14px 16px 8px 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Lines */
+    .line { display: block; }
+    .line.err { color: var(--err); }
+    .line.dim { color: var(--muted); }
+    .line.cmd { color: var(--fg); }
+
+    /* Input row */
+    .inputRow {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 10px 16px 14px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+
+    .prompt {
+      color: var(--prompt);
+      font-weight: 700;
+      user-select: none;
+    }
+
+    /* Use a textarea so we can support multi-line paste cleanly */
+    #input {
+      flex: 1;
+      background: transparent;
+      border: 0;
+      outline: none;
+      resize: none;
+      padding: 0;
+      margin: 0;
+      color: var(--fg);
+      font: inherit;
+      line-height: 1.25;
+      height: 1.25em; /* single-line look */
+      overflow: hidden;
+      caret-color: var(--fg);
+    }
+
+    /* Make selection look terminal-ish */
+    ::selection { background: var(--sel); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      kebab-tools web shell — uses a Pages Function proxy at <code>/shell-proxy</code>
+    </header>
+
+    <div id="screen" aria-live="polite" aria-label="Terminal output"></div>
+
+    <div class="inputRow">
+      <div class="prompt">&gt;</div>
+      <textarea id="input" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+    </div>
+  </div>
+
+  <script>
+    const PROXY_ENDPOINT = "/shell-proxy";
+    const screen = document.getElementById("screen");
+    const input = document.getElementById("input");
+
+    let busy = false;
+
+    function addLine(text, className = "line") {
+      // Keep *exact* output formatting; split into lines and append each
+      const parts = String(text).split("\n");
+      for (const p of parts) {
+        const div = document.createElement("div");
+        div.className = className;
+        div.textContent = p;
+        screen.appendChild(div);
+      }
+      // Scroll to bottom
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function setBusy(state) {
+      busy = state;
+      input.disabled = state;
+      // keep focus behavior consistent
+      if (!state) queueMicrotask(() => input.focus());
+    }
+
+    async function proxyGet(path) {
+      // path is like: "version" or "help" or "hash/md5/hello"
+      const url = `${PROXY_ENDPOINT}?path=${encodeURIComponent(path)}`;
+      const res = await fetch(url, { method: "GET" });
+      const text = await res.text();
+      if (!res.ok) {
+        // Preserve body text so errors from function/server show
+        throw new Error(text || `HTTP ${res.status}`);
+      }
+      return text;
+    }
+
+    async function initBanner() {
+      setBusy(true);
+      try {
+        const ver = (await proxyGet("version")).trim();
+
+        // Match your Python banner closely (Ctrl+Z note is a terminal concept, but keep text)
+        addLine("");
+        addLine(`kebab-tools ${ver} | Client Shell (Use Ctrl+Z to exit)`, "line");
+        addLine("Type 'help', 'license', 'about' or 'copyright' for more information.", "line");
+      } catch (e) {
+        addLine(`An error occurred: ${e.message}`, "line err");
+        addLine("Make sure you deployed functions/shell-proxy.js and it is reachable at /shell-proxy.", "line dim");
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function runCommand(raw) {
+      const cmd = raw.trim();
+      if (!cmd) return;
+
+      // Echo command like a shell
+      addLine(`> ${cmd}`, "line cmd");
+
+      // Python: f = i.replace(" ", "/")
+      const path = cmd.replace(/ /g, "/");
+
+      setBusy(true);
+      try {
+        const out = await proxyGet(path);
+        // Python: print(r.text.rstrip())
+        addLine(out.replace(/\s+$/g, ""), "line");
+      } catch (e) {
+        addLine(`An error occurred: ${e.message}`, "line err");
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    // Enter submits; Shift+Enter allows newline (useful for paste/edit, though Python input() is single line)
+    input.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (busy) return;
+
+        const value = input.value;
+        input.value = "";
+        await runCommand(value);
+      }
+    });
+
+    // Keep focus terminal-like
+    document.addEventListener("click", () => {
+      if (!busy) input.focus();
+    });
+
+    // Start
+    initBanner();
+    input.focus();
+  </script>
+</body>
+</html>
