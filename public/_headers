@@ -1,2 +1,4 @@
 /404.html
   Content-Type: text/plain; charset=utf-8
+/version
+  Content-Type: text/plain; charset=utf-8
