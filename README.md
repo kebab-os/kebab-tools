@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://kebab.is-a.software"><img src="static/favicon.png" width="200px" height="auto" /></a>
   <h1>kebab-tools - v0.1.0</h1>
-  <b>Terminal tools for the command line</b>
+  <b>Command line tools via HTTP</b>
 </div>
 
 ---
