@@ -4,7 +4,7 @@ import sys
 def main():
     vu = "https://tools.kebabos.me/version"
     v = requests.get(vu, headers={"User-Agent": "curl/7.81.0"}, timeout=10)
-    print("\nkebab-tools v1.7.2 | Client Shell (Use Ctrl+Z to exit)")
+    print(f"\nkebab-tools {v} | Client Shell (Use Ctrl+Z to exit)")
     print("Type 'help', 'license', 'about' or 'copyright' for more information.")
     while True:
         try:
