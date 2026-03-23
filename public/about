@@ -1,0 +1,17 @@
+kebab-tools is a collection of simple, fast, and 
+lightweight utilities designed for developers 
+and power users.
+
+[ PHILOSOPHY ]
+The web is bloated. kebab-tools aims to provide 
+the essentials without the fluff. If it can't 
+be used with a simple 'curl' command, it's 
+probably too complicated.
+
+[ FEATURES ]
+- Terminal-first: Fast responses for CLI users.
+- Browser-ready: Visual interface at /web.html.
+- Minimalist: Zero tracking, zero ads.
+
+[ SOURCE ]
+Managed by kebabos. 
