@@ -52,7 +52,14 @@ If you prefer to use kebab-tools directly through your browser, you can access t
 To help improve kebab-tools, contributing to this repository would be appriciated. To help us fix bugs, [create an issue](https://github.com/kebab-os/kebab-tools/issues/new/choose) to make kebab-tools free of any bugs.
 
 
-## Contributors
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+### Contributors
 
 As of `20/03/2026`, these are the contributors for kebab-tools:
 
