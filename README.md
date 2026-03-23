@@ -44,7 +44,7 @@ Following these steps should launch the client shell.
 
 ## Web Shell
 
-For use with browsers. Go to [tools.kebabos.me/web](https://tools.kebabos.me/web). Then use the gui to access kebab-tools from the web.
+If you prefer to use kebab-tools directly through your browser, you can access the web-based version by visiting [tools.kebabos.me/web](https://tools.kebabos.me/web). Once the page loads, you will find an intuitive GUI that allows you to manage and interact with all available tools without needing to use a command line.
 
 
 ## Issues
