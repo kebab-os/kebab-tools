@@ -31,7 +31,6 @@ curl https://kebab-tools.pages.dev
 
 If this doesnt work, [raise an issue](https://github.com/kebab-os/kebab-tools/issues/new/choose) to help support the project.
 
-
 ### Client Shell (advanced setup)
 
 Instead of using bash commands like curl to use kebab-tools, use the client shell to easily run endpoints. To get started, download [this file](cs/kebab-tools.py). To run the client shell, enter the same directory as the file, then run:
@@ -41,6 +40,11 @@ python kebab-tools.py
 ```
 
 Following these steps should launch the client shell.
+
+
+## Web Shell
+
+For use with browsers. Go to [tools.kebabos.me/web](https://tools.kebabos.me/web). Then use the gui to access kebab-tools from the web.
 
 
 ## Issues
