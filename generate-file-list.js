@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dontInclude = ['list.js', 'index.js'];
+const dontInclude = ['list.js', 'index.js', '404.js', 'shell-proxy.js'];
 const functionsDir = './functions';
 const outputDir = './public';
 
