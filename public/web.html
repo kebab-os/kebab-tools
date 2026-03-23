@@ -3,374 +3,276 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>kebab-tools | Web Shell</title>
+  <title>kebab-tools | Web Client</title>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    :root{
-      --bg:#0b0c0f;
-      --panel:#0f1117;
-      --fg:#e8eaf0;
-      --muted:#98a2b3;
-      --accent:#7c5cff;
-      --err:#ff4d4d;
-      --border:rgba(255,255,255,.08);
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    :root {
+      --bg: #ffffff;
+      --fg: #1a1a1a;
+      --sub: #737373;
+      --acc: #000000;
+      --border: #e5e5e5;
+      --panel: #f9f9fb;
+      --font: "Inter", -apple-system, system-ui, sans-serif;
+      --mono: "JetBrains Mono", "SF Mono", "Menlo", monospace;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      background: radial-gradient(1200px 600px at 30% -10%, rgba(124,92,255,.18), transparent 60%),
-                  radial-gradient(900px 500px at 90% 10%, rgba(124,92,255,.10), transparent 55%),
-                  var(--bg);
-      color:var(--fg);
+    [data-theme="dark"] {
+      --bg: #0a0a0a;
+      --fg: #f5f5f5;
+      --sub: #a3a3a3;
+      --acc: #ffffff;
+      --border: #262626;
+      --panel: #171717;
+    }
+
+    * { box-sizing: border-box; transition: background 0.2s, color 0.2s; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
       font-family: var(--font);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    .shell{
-      height:100%;
-      display:flex;
-      align-items:stretch;
-      justify-content:center;
-      padding:16px;
+    /* Minimal Header */
+    header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
     }
-
-    .frame{
-      width:min(980px, 100%);
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--border);
-      border-radius:14px;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      backdrop-filter: blur(8px);
+    .brand { font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+    .nav-actions { display: flex; gap: 12px; }
+    button.icon-btn {
+      background: none;
+      border: none;
+      color: var(--sub);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
     }
+    button.icon-btn:hover { color: var(--fg); background: var(--panel); }
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
-      border-bottom:1px solid var(--border);
-      background: rgba(15,17,23,.55);
-      user-select:none;
+    /* Terminal Output */
+    #output {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
     }
+    .line { margin-bottom: 4px; white-space: pre-wrap; }
+    .line.prompt-line { color: var(--sub); margin-top: 1.5rem; display: flex; gap: 10px; }
+    .line.prompt-line i { width: 14px; margin-top: 4px; }
+    .line.response { color: var(--fg); padding-left: 24px; }
+    .line.error { color: #ef4444; }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
+    /* Floating Input Bar */
+    .input-wrapper {
+      padding: 1.5rem 2rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
     }
-
-    .dotrow{ display:flex; gap:6px; }
-    .dot{ width:10px; height:10px; border-radius:50%; opacity:.7; }
-    .dot.r{ background:#ff5f57; }
-    .dot.y{ background:#febc2e; }
-    .dot.g{ background:#28c840; }
-
-    .title{
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+    .input-container {
+      display: flex;
+      align-items: center;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 12px;
+      gap: 12px;
     }
-
-    .hint{
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-    }
-    .hint kbd{
-      font-family:inherit;
-      font-size:11px;
-      padding:2px 6px;
-      border:1px solid var(--border);
-      border-bottom-color: rgba(255,255,255,.14);
-      border-radius:7px;
-      background: rgba(0,0,0,.18);
+    #cmd-input {
+      flex: 1;
+      background: none;
+      border: none;
       color: var(--fg);
+      font-family: var(--mono);
+      font-size: 15px;
+      padding: 12px 0;
+      outline: none;
     }
 
-    #screen{
-      flex:1;
-      padding:14px 16px 10px 16px;
-      overflow:auto;
-      white-space:pre-wrap;
-      word-break:break-word;
-      background: rgba(0,0,0,.10);
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
     }
-
-    .line{ display:block; }
-    .line.dim{ color:var(--muted); }
-    .line.err{ color:var(--err); }
-    .line.cmd{ color:var(--fg); }
-
-    .inputbar{
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      padding:10px 12px 12px 12px;
-      border-top:1px solid var(--border);
-      background: rgba(15,17,23,.55);
+    .modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 400px;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
+    .modal-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
 
-    .prompt{
-      color: rgba(232,234,240,.9);
-      font-weight:700;
-      padding:6px 6px 6px 8px;
-      border-radius:10px;
-      background: rgba(124,92,255,.10);
-      border:1px solid rgba(124,92,255,.25);
-      line-height:1;
-      user-select:none;
-    }
-
-    #input{
-      flex:1;
-      min-height: 34px;
-      max-height: 140px;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.18);
-      color: var(--fg);
-      font: inherit;
-      line-height:1.25;
-      outline:none;
-      resize:none;
-      overflow:auto;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
-    }
-    #input:focus{
-      border-color: rgba(124,92,255,.45);
-      box-shadow: 0 0 0 3px rgba(124,92,255,.18);
-    }
-    #input:disabled{ opacity:.55; }
-
-    ::selection{ background: rgba(124,92,255,.22); }
+    /* Hide scrollbar */
+    #output::-webkit-scrollbar { width: 0; }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <div class="frame" role="application" aria-label="kebab-tools web shell">
-      <div class="topbar">
-        <div class="brand">
-          <div class="dotrow" aria-hidden="true">
-            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-          </div>
-          <div class="title" id="titleText">kebab-tools | Web Shell</div>
-        </div>
-        <div class="hint">
-          history: <kbd>↑</kbd>/<kbd>↓</kbd> · run: <kbd>Enter</kbd> · newline: <kbd>Shift</kbd>+<kbd>Enter</kbd>
-        </div>
+
+  <header>
+    <div class="brand"><i data-lucide="terminal"></i> kebab-tools</div>
+    <div class="nav-actions">
+      <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+        <i data-lucide="sun" id="theme-icon"></i>
+      </button>
+      <button class="icon-btn" onclick="toggleModal()" title="Settings">
+        <i data-lucide="settings"></i>
+      </button>
+    </div>
+  </header>
+
+  <main id="output"></main>
+
+  <div class="input-wrapper">
+    <div class="input-container">
+      <i data-lucide="chevron-right" size="18" style="color: var(--sub)"></i>
+      <input type="text" id="cmd-input" placeholder="Enter command..." autofocus spellcheck="false" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settings-modal" onclick="if(event.target === this) toggleModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 style="margin:0">Settings</h3>
+        <button class="icon-btn" onclick="toggleModal()"><i data-lucide="x"></i></button>
       </div>
-
-      <div id="screen" aria-live="polite" aria-label="Terminal output"></div>
-
-      <div class="inputbar">
-        <div class="prompt">&gt;</div>
-        <textarea id="input" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Command input"></textarea>
+      <div class="setting-item">
+        <span>Clear History</span>
+        <button class="icon-btn" onclick="clearLocalHistory()"><i data-lucide="trash-2"></i></button>
+      </div>
+      <div class="setting-item">
+        <span>About</span>
+        <span style="font-size: 12px; color: var(--sub)">v1.0 Web Shell</span>
       </div>
     </div>
   </div>
 
   <script>
-    // Uses your Cloudflare Pages Function proxy: functions/shell-proxy.js -> /shell-proxy
-    const PROXY_ENDPOINT = "/shell-proxy";
+    const output = document.getElementById('output');
+    const input = document.getElementById('cmd-input');
+    const PROXY = "/shell-proxy";
+    
+    // History memory
+    let history = JSON.parse(localStorage.getItem('kebab_hist') || '[]');
+    let histPos = history.length;
 
-    const screen = document.getElementById("screen");
-    const input = document.getElementById("input");
-    const titleText = document.getElementById("titleText");
-
-    let busy = false;
-
-    // --- Command history (memory) ---
-    const HISTORY_KEY = "kebabtools:webshell:history:v1";
-    const HISTORY_MAX = 200;
-
-    let history = loadHistory();     // array of strings
-    let histIndex = history.length;  // points "one past end" when not browsing
-    let draft = "";                  // current in-progress text before user pressed ↑
-
-    function loadHistory() {
-      try {
-        const raw = localStorage.getItem(HISTORY_KEY);
-        const arr = raw ? JSON.parse(raw) : [];
-        return Array.isArray(arr) ? arr.filter(v => typeof v === "string") : [];
-      } catch {
-        return [];
+    function printLine(text, type = 'response') {
+      const div = document.createElement('div');
+      div.className = `line ${type}`;
+      if (type === 'prompt-line') {
+        div.innerHTML = `<i data-lucide="terminal"></i> <span>${text}</span>`;
+      } else {
+        div.textContent = text;
       }
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+      lucide.createIcons();
     }
 
-    function saveHistory() {
-      try {
-        localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(-HISTORY_MAX)));
-      } catch {
-        // ignore (private mode / storage blocked)
+    async function exec(cmd) {
+      if (!cmd.trim()) return;
+      
+      printLine(cmd, 'prompt-line');
+      
+      // Memory management
+      if (history[history.length - 1] !== cmd) {
+        history.push(cmd);
+        localStorage.setItem('kebab_hist', JSON.stringify(history));
       }
-    }
+      histPos = history.length;
 
-    function pushHistory(cmd) {
-      // Avoid storing empties; also avoid duplicate consecutive entries
-      if (!cmd) return;
-      const last = history[history.length - 1];
-      if (last === cmd) return;
-      history.push(cmd);
-      if (history.length > HISTORY_MAX) history = history.slice(-HISTORY_MAX);
-      saveHistory();
-      histIndex = history.length;
-    }
-
-    // --- UI helpers ---
-    function addLine(text, className = "line") {
-      const parts = String(text).split("\n");
-      for (const p of parts) {
-        const div = document.createElement("div");
-        div.className = className;
-        div.textContent = p;
-        screen.appendChild(div);
-      }
-      screen.scrollTop = screen.scrollHeight;
-    }
-
-    function setBusy(state) {
-      busy = state;
-      input.disabled = state;
-      if (!state) queueMicrotask(() => input.focus());
-    }
-
-    function autosize() {
-      // keep textarea minimal but allow multiline paste/edit
-      input.style.height = "0px";
-      const h = Math.min(input.scrollHeight, 140);
-      input.style.height = Math.max(h, 34) + "px";
-    }
-
-    async function proxyGet(path) {
-      const url = `${PROXY_ENDPOINT}?path=${encodeURIComponent(path)}`;
-      const res = await fetch(url, { method: "GET" });
-      const text = await res.text();
-      if (!res.ok) throw new Error(text || `HTTP ${res.status}`);
-      return text;
-    }
-
-    async function initBanner() {
-      setBusy(true);
-      try {
-        const ver = (await proxyGet("version")).trim();
-        titleText.textContent = `kebab-tools ${ver} | Web Shell`;
-
-        addLine("");
-        addLine(`kebab-tools ${ver} | Client Shell (Use Ctrl+Z to exit)`);
-        addLine("Type 'help', 'license', 'about' or 'copyright' for more information.");
-      } catch (e) {
-        addLine(`An error occurred: ${e.message}`, "line err");
-        addLine("Check that /shell-proxy exists (functions/shell-proxy.js) and is deployed.", "line dim");
-      } finally {
-        setBusy(false);
-      }
-    }
-
-    async function runCommand(raw) {
-      const cmd = raw.trim();
-      if (!cmd) return;
-
-      // record history first (like a real shell)
-      pushHistory(cmd);
-
-      // echo command
-      addLine(`> ${cmd}`, "line cmd");
-
-      // Python behavior: replace spaces with /
+      // Logic from your Python script: space -> /
       const path = cmd.replace(/ /g, "/");
 
-      setBusy(true);
       try {
-        const out = await proxyGet(path);
-        addLine(out.replace(/\s+$/g, ""), "line");
-      } catch (e) {
-        addLine(`An error occurred: ${e.message}`, "line err");
-      } finally {
-        setBusy(false);
+        const res = await fetch(`${PROXY}?path=${encodeURIComponent(path)}`);
+        const data = await res.text();
+        printLine(data.trimEnd());
+      } catch (err) {
+        printLine(`Error: ${err.message}`, 'error');
       }
     }
 
-    // --- Key handling: Enter + history up/down ---
-    input.addEventListener("keydown", async (e) => {
-      // Submit (single line like Python input()) unless Shift+Enter
-      if (e.key === "Enter" && !e.shiftKey) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = input.value;
+        input.value = '';
+        exec(val);
+      } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        if (busy) return;
-
-        const value = input.value;
-        input.value = "";
-        autosize();
-
-        // reset history browsing state
-        histIndex = history.length;
-        draft = "";
-
-        await runCommand(value);
-        return;
-      }
-
-      // History: Up / Down (only when caret is on first/last line, to not break multiline editing)
-      if ((e.key === "ArrowUp" || e.key === "ArrowDown") && !e.altKey && !e.ctrlKey && !e.metaKey) {
-        const v = input.value;
-        const caret = input.selectionStart ?? v.length;
-
-        const before = v.slice(0, caret);
-        const after = v.slice(caret);
-
-        const isFirstLine = !before.includes("\n");
-        const isLastLine = !after.includes("\n");
-
-        if (e.key === "ArrowUp" && isFirstLine) {
-          e.preventDefault();
-          if (history.length === 0) return;
-
-          if (histIndex === history.length) draft = input.value; // save draft on first browse
-          histIndex = Math.max(0, histIndex - 1);
-          input.value = history[histIndex] ?? "";
-          autosize();
-          // move caret to end
-          input.selectionStart = input.selectionEnd = input.value.length;
-          return;
+        if (histPos > 0) {
+          histPos--;
+          input.value = history[histPos];
         }
-
-        if (e.key === "ArrowDown" && isLastLine) {
-          e.preventDefault();
-          if (history.length === 0) return;
-
-          histIndex = Math.min(history.length, histIndex + 1);
-          if (histIndex === history.length) {
-            input.value = draft; // restore draft
-          } else {
-            input.value = history[histIndex] ?? "";
-          }
-          autosize();
-          input.selectionStart = input.selectionEnd = input.value.length;
-          return;
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (histPos < history.length - 1) {
+          histPos++;
+          input.value = history[histPos];
+        } else {
+          histPos = history.length;
+          input.value = '';
         }
       }
     });
 
-    input.addEventListener("input", autosize);
+    // Theme Toggle
+    function toggleTheme() {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      const icon = document.getElementById('theme-icon');
+      icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      lucide.createIcons();
+    }
 
-    document.addEventListener("click", () => {
-      if (!busy) input.focus();
-    });
+    // Modal
+    function toggleModal() {
+      const m = document.getElementById('settings-modal');
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-    // Start
-    autosize();
-    initBanner();
-    input.focus();
+    function clearLocalHistory() {
+      history = [];
+      localStorage.removeItem('kebab_hist');
+      toggleModal();
+      alert('History cleared');
+    }
+
+    // Init banner (Python logic)
+    (async () => {
+      lucide.createIcons();
+      try {
+        const res = await fetch(`${PROXY}?path=version`);
+        const ver = await res.text();
+        printLine(`kebab-tools ${ver.trim()} | Shell`, 'prompt-line');
+        printLine("Type 'help' for available tools.");
+      } catch {
+        printLine("Offline Mode: Server unreachable.", "error");
+      }
+    })();
   </script>
 </body>
 </html>
