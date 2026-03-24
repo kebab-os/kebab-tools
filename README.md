@@ -66,6 +66,19 @@ Following these steps should launch the client shell.
 If you prefer to use kebab-tools directly through your browser, you can access the web-based version by visiting [tools.kebabos.me](https://tools.kebabos.me) on a browser. Once the page loads, you will find an intuitive GUI that allows you to manage and interact with all available tools without needing to use a command line.
 
 
+## Key Files/Directories
+
+|File/Directory|Description|
+|-|-|
+|`cs/kebab-tools.py`|Client shell|
+|`functions`|All tools|
+|`install/client-shell-install.sh`|Client shell install|
+|`package.json`|Package|
+|`functions/shell-proxy`|Node for webshell|
+
+
+
+
 ## Issues
 
 To help improve kebab-tools, contributing to this repository would be appriciated. To help us fix bugs, [create an issue](https://github.com/kebab-os/kebab-tools/issues/new/choose) to make kebab-tools free of any bugs.
