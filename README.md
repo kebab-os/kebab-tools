@@ -57,6 +57,8 @@ Following these steps should launch the client shell.
 > cd kt
 > curl -O https://raw.githubusercontent.com/kebab-os/kebab-tools/refs/heads/main/cs/kebab-tools.py
 > ```
+>
+> Then whenever you want to access it, run `python ~/kt/kebab-shell.py`.
 
 
 ## Web Shell
