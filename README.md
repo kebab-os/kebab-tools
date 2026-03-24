@@ -51,7 +51,7 @@ Following these steps should launch the client shell.
 
 > [!TIP]
 > To quickly install client shell in a useful location, run this install script:
-> ```
+> ```bash
 > cd ~
 > mkdir kt
 > cd kt
