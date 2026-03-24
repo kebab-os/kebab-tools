@@ -49,6 +49,15 @@ python kebab-tools.py
 
 Following these steps should launch the client shell.
 
+> [!TIP]
+> To quickly install client shell in a useful location, run this install script:
+> ```
+> cd ~
+> mkdir kt
+> cd kt
+> curl -O https://raw.githubusercontent.com/kebab-os/kebab-tools/refs/heads/main/cs/kebab-tools.py
+> ```
+
 
 ## Web Shell
 
