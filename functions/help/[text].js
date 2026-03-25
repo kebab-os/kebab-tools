@@ -15,7 +15,7 @@ To use kebab-tools, curl the endpoint for the tool that you wish to use like thi
 Page 2 | HELP | kebab-tools
 ============================================
 
-Kebab-tools is a tool app hosted on cloudfare pages, using cloudfare pages functions: 'https://developers.cloudflare.com/pages/functions'.
+Kebab-tools is a tool app hosted on cloudflare pages, using cloudflare pages functions: 'https://developers.cloudflare.com/pages/functions'.
 
 The URL is 'https://tools.kebabos.me', and endpoints follow the pattern: 'https://tools.kebabos.me/dir/name', 'https://tools.kebabos.me/dir/name/text' or 'https://tools.kebabos.me/dir/subdir/name'.\n
 `,
