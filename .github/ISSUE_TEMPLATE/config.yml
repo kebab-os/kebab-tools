@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🌐 Website
+    url: https://tools.kebabos.me
+    about: Open kebab-tools web shell
+  - name: 📖 Documentation
+    url: https://docs.kebabos.me
+    about: Read the official guides before opening an issue.
