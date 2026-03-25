@@ -30,5 +30,5 @@ jobs:
           stale-pr-label: "stale"
           
           # Exemptions (won't touch these)
-          exempt-issue-labels: "confirmed,pinned,security"
-          exempt-pr-labels: "dependencies,wip"
+          exempt-issue-labels: "confirmed,pinned,security,antistale,admin"
+          exempt-pr-labels: "dependencies,wip,antistale,admin"
