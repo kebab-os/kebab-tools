@@ -77,6 +77,9 @@ If you prefer to use kebab-tools directly through your browser, you can access t
 |`functions/shell-proxy`|Node for webshell|
 
 
+## Dependencies
+
+Install all the [dependencies](dependencies.txt) in order to use kebab-tools.
 
 
 ## Issues
