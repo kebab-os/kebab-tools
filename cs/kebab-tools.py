@@ -12,17 +12,17 @@ def main():
             if not i:
                 continue
             if i == "exit":
-                print("\nExiting...")
+                print("Exiting...")
                 sys.exit(0)
             f = i.replace(" ", "/")
             u = f"https://tools.kebabos.me/{f}"
             r = requests.get(u, headers={"User-Agent": "curl/7.81.0"}, timeout=10)
             print(r.text.rstrip())
         except KeyboardInterrupt:
-            print("\n\nExiting...")
+            print("Exiting...")
             sys.exit(0)
         except EOFError:
-            print("\nExiting...")
+            print("Exiting...")
             sys.exit(0)
         except Exception as e:
             print(f"An error occurred: {e}")
