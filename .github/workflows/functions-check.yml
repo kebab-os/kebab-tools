@@ -27,4 +27,4 @@ jobs:
 
       - name: Run Compatibility Scan
         # This command validates routing and runtime compatibility
-        run: npx wrangler pages functions build --functions-directory=functions
+        run: npx wrangler pages functions build functions
