@@ -1,26 +1,30 @@
-name: "Cloudflare Functions Check"
+name: "Functions Compatibility"
 
 on:
   pull_request:
-    # Only run if files in the functions folder change
     paths:
-      - 'functions/**'
+      - 'functions/**' # Only runs when you change your functions
 
 jobs:
-  check-compatibility:
+  check:
+    name: "Functions Compatibility Check"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write # Allows the "Success/Failure" to show in the PR box
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Cloudflare recommends the latest Active LTS
+          node-version: 20
 
       - name: Install Wrangler
         run: npm install -g wrangler
 
-      - name: Verify Functions Compatibility
-        # This command attempts to build the functions without deploying them
-        run: npx wrangler pages functions build --project-name=your-project-name --functions-directory=functions
+      - name: Run Compatibility Scan
+        # This command validates routing and runtime compatibility
+        run: npx wrangler pages functions build --functions-directory=functions
