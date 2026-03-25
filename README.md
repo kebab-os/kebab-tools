@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://kebabos.me"><img src="static/favicon.png" width="200px" height="auto" /></a>
-  <h1>kebab-tools - v1.7.0</h1>
+  <h1>kebab-tools - v1.8.2</h1>
   <div>
     <a href="https://github.com/kebab-os/kebab-tools/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/kebab-os/kebab-tools?style=flat-square"></a>
     <a href="#"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/kebab-os/kebab-tools?style=flat-square"></a>
