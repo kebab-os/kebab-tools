@@ -1,7 +1,4 @@
-# 7aimez is the default owner for everything (the code)
 *       @7aimez
-
-# ethembeldagli is responsible for business/documentation folders
-/docs/  @ethembeldagli
-/legal/ @ethembeldagli
-/marketing/ @ethembeldagli
+/static/  @ethembeldagli
+README.md @ethembeldagli
+/.github/ @ethembeldagli
