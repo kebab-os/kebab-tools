@@ -11,6 +11,9 @@ def main():
             i = input("> ").strip()
             if not i:
                 continue
+            if i == "exit":
+                print("\nExiting...")
+                sys.exit(0)
             f = i.replace(" ", "/")
             u = f"https://tools.kebabos.me/{f}"
             r = requests.get(u, headers={"User-Agent": "curl/7.81.0"}, timeout=10)
