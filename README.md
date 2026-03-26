@@ -104,4 +104,7 @@ As of `20/03/2026`, these are the contributors for kebab-tools:
 
 ## License
 
-kebab-tools is under the [MIT License](LICENSE).
+<p style="display: flex">
+  <span>kebab-tools is under the <a href="LICENSE">MIT License</span>&ensp;
+  <a href="https://github.com/kebab-os/kebab-tools/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/kebab-os/kebab-tools?style=flat-square"></a>
+</p>
