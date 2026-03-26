@@ -105,3 +105,6 @@ As of `20/03/2026`, these are the contributors for kebab-tools:
 ## License
 
 <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/kebab-os/kebab-tools?style=flat-square"></a>
+
+<br /><br/><hr />
+<sub align="right">&copy; 2026 kebab-tools</sub>
