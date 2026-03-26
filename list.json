@@ -98,6 +98,7 @@
   "functions/random/integer.js",
   "functions/random/number.js",
   "functions/random/password.js",
+  "functions/random/rgb.js",
   "functions/random/uuid.js",
   "functions/request/city.js",
   "functions/request/country.js",
