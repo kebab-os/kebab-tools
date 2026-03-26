@@ -73,7 +73,7 @@ If you prefer to use kebab-tools directly through your browser, you can access t
 |`cs/kebab-tools.py`|Client shell|
 |`functions`|All tools|
 |`install/client-shell-install.sh`|Client shell install|
-|`package.json`|Package|
+|`list.json`|List of tools|
 |`functions/shell-proxy`|Node for webshell|
 
 
