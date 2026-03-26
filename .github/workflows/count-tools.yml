@@ -2,6 +2,8 @@ name: Count tools
 
 on:
   push:
+    paths:
+      - "functions/**"
   workflow_dispatch:
 
 permissions:
