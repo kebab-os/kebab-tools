@@ -1,37 +1,20 @@
-name: Count tools
+- name: Count files recursively in functions/ excluding specific files
+  run: |
+    EXCLUDES="list.js index.js 404.js shell-proxy.js"
 
-on:
-  push:
-  workflow_dispatch:
+    FIND_CMD="find functions -type f"
+    for FILE in $EXCLUDES; do
+      FIND_CMD="$FIND_CMD ! -name $FILE"
+    done
 
-jobs:
-  count:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    COUNT=$(bash -c "$FIND_CMD" | wc -l)
 
-      - name: Count files recursively in functions/ excluding specific files
-        run: |
-          # Files to exclude
-          EXCLUDES="list.js index.js 404.js shell-proxy.js"
-
-          # Build the find command with exclusions
-          FIND_CMD="find functions -type f"
-          for FILE in $EXCLUDES; do
-            FIND_CMD="$FIND_CMD ! -name $FILE"
-          done
-
-          # Execute and count
-          COUNT=$(bash -c "$FIND_CMD" | wc -l)
-
-          # Write JSON output
-          mkdir -p metrics
-          echo "{ \"tools\": $COUNT }" > metrics/tools.json
-
-      - name: Commit updated count
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add metrics/tools.json
-          git commit -m "Update tools count" || echo "No changes"
-          git push
+    mkdir -p metrics
+    cat <<EOF > metrics/tools.json
+{
+  "schemaVersion": 1,
+  "label": "tools",
+  "message": "$COUNT",
+  "color": "blue"
+}
+EOF
