@@ -1,1 +1,6 @@
-{ "files": 0 }
+{
+  "schemaVersion": 1,
+  "label": "tools",
+  "message": "0",
+  "color": "blue"
+}
