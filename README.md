@@ -61,6 +61,11 @@ Following these steps should launch the client shell.
 > Then whenever you want to access it, run `python ~/kt/kebab-tools.py`.
 
 
+## Tool List
+
+[list.json](list.json) contains a list of all the tools in kebab-tools. The list is automatically updated by [github actions](.github/workflows/list-tools.yml), and does not update after the project is cloned locally. Alternatively, use the endpoint `/list` for a more visual json representation of the list. If you would like to use the list.json version, without useing github, you can use the [raw list.json file](https://raw.githubusercontent.com/kebab-os/kebab-tools/main/list.json) that will still be updated.
+
+
 ## Web Shell
 
 If you prefer to use kebab-tools directly through your browser, you can access the web-based version by visiting [tools.kebabos.me](https://tools.kebabos.me) on a browser. Once the page loads, you will find an intuitive GUI that allows you to manage and interact with all available tools without needing to use a command line.
