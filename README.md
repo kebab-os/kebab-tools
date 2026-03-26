@@ -5,7 +5,7 @@
     <a href="https://github.com/kebab-os/kebab-tools/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/kebab-os/kebab-tools?style=flat-square"></a>
     <a href="#"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/kebab-os/kebab-tools?style=flat-square"></a>
     <a href="https://github.com/kebab-os/kebab-tools/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/kebab-os/kebab-tools?style=flat-square"></a>
-    <a href="#"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/kebab-os/kebab-tools?style=flat-square"></a>
+    <a href="#"><img alt="GitHub branch check runs" src="https://img.shields.io/github/check-runs/kebab-os/kebab-tools/main?style=flat-square"></a>
     <a href="#"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/kebab-os/kebab-tools?style=flat-square"></a>
 </a>
   </div><br />
