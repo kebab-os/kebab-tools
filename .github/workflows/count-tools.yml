@@ -41,7 +41,7 @@ jobs:
             "schemaVersion": 1,
             "label": "tools",
             "message": "$COUNT",
-            "color": "blue"
+            "color": "red"
           }
           EOF
 
