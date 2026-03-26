@@ -35,16 +35,17 @@ jobs:
 
           mkdir -p metrics
           cat <<EOF > metrics/tools.json
-{
-  "schemaVersion": 1,
-  "label": "tools",
-  "message": "$COUNT",
-  "color": "blue"
-}
-EOF
+          {
+            "schemaVersion": 1,
+            "label": "tools",
+            "message": "$COUNT",
+            "color": "blue"
+          }
+          EOF
 
       - name: Commit updated count
         run: |
+          cd "$GITHUB_WORKSPACE"
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add metrics/tools.json
