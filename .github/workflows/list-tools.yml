@@ -1,0 +1,60 @@
+name: List tools
+
+on:
+  push:
+    paths:
+      - "functions/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate list.json of all files under functions/
+        run: |
+          cd "$GITHUB_WORKSPACE"
+
+          echo "Scanning functions/ directory..."
+          if [ ! -d "functions" ]; then
+            echo "functions directory not found"
+            exit 0
+          fi
+
+          # Find all files inside subdirectories of functions/
+          FILES=$(find functions -type f | sort)
+
+          echo "Found files:"
+          echo "$FILES"
+
+          # Create JSON array
+          mkdir -p .
+          echo "[" > list.json
+          FIRST=true
+          while IFS= read -r FILE; do
+            if [ "$FIRST" = true ]; then
+              FIRST=false
+            else
+              echo "," >> list.json
+            fi
+            printf "  \"%s\"" "$FILE" >> list.json
+          done <<< "$FILES"
+          echo "" >> list.json
+          echo "]" >> list.json
+
+          echo "Generated list.json:"
+          cat list.json
+
+      - name: Commit updated list.json
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add list.json
+          git commit -m "Update functions file list" || echo "No changes"
+          git push
