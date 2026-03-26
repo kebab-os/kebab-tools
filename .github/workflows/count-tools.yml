@@ -1,13 +1,47 @@
 - name: Count files recursively in functions/ excluding specific files
   run: |
-    EXCLUDES="list.js index.js 404.js shell-proxy.js"
+    cd "$GITHUB_WORKSPACE"
 
-    FIND_CMD="find functions -type f"
-    for FILE in $EXCLUDES; do
-      FIND_CMD="$FIND_CMD ! -name $FILE"
-    done
+    echo "Listing all files under functions/:"
+    find functions -type f
 
-    COUNT=$(bash -c "$FIND_CMD" | wc -l)
+    echo "Counting files (excluding list.js, index.js, 404.js, shell-proxy.js)..."
+
+    COUNT=$(find functions -type f \
+      ! -name "list.js" \
+      ! -name "index.js" \
+      ! -name "404.js" \
+      ! -name "shell-proxy.js" \
+      | wc -l)
+
+    echo "Final count: $COUNT"
+
+    mkdir -p metrics
+    cat <<EOF > metrics/tools.json
+{
+  "schemaVersion": 1,
+  "label": "tools",
+  "message": "$COUNT",
+  "color": "blue"
+}
+EOF
+- name: Count files recursively in functions/ excluding specific files
+  run: |
+    cd "$GITHUB_WORKSPACE"
+
+    echo "Listing all files under functions/:"
+    find functions -type f
+
+    echo "Counting files (excluding list.js, index.js, 404.js, shell-proxy.js)..."
+
+    COUNT=$(find functions -type f \
+      ! -name "list.js" \
+      ! -name "index.js" \
+      ! -name "404.js" \
+      ! -name "shell-proxy.js" \
+      | wc -l)
+
+    echo "Final count: $COUNT"
 
     mkdir -p metrics
     cat <<EOF > metrics/tools.json
