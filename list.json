@@ -197,6 +197,7 @@
   "functions/http/methods.js",
   "functions/http/mime/[text].js",
   "functions/http/status/[text].js",
+  "functions/image/ascii-art/[text].js",
   "functions/index.js",
   "functions/ip/cidr/[text].js",
   "functions/ip/compress/[text].js",
