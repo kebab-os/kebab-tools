@@ -49,13 +49,14 @@ export async function onRequestGet({ request, params }) {
 }
 
 function parseDataUrlBase64(dataUrl) {
-  // data:[<mime>][;base64],<data>
   const m = /^data:([^;,]+)?;base64,(.+)$/i.exec(dataUrl.trim());
   if (!m) throw new Error("Invalid data URL. Expected format: data:image/png;base64,AAA...");
   const mime = (m[1] || "application/octet-stream").toLowerCase();
 
-  // atob is available in Workers runtime
-  const b64 = m[2];
+  // Fix: '+' may arrive as ' ' depending on query parsing; also remove newlines/spaces
+  let b64 = m[2].replace(/\s+/g, "");
+  b64 = b64.replace(/ /g, "+");
+
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
