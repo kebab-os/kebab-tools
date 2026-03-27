@@ -106,6 +106,9 @@ As of `20/03/2026`, these are the contributors for kebab-tools:
 - [@7aimez](https://github.com/7aimez) - 7ames
 - [@ethembeldagli](https://github.com/ethembeldagli) - Ethem Beldagli
 
+## Checks
+
+To view the status of all the checks, use [CHECKS.md](CHECKS.md).
 
 ## License
 
