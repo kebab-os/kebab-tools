@@ -1,5 +1,6 @@
 {
   "name": "kebab-tools",
+  "version": "v1.10.2",
   "description": "Command line tools via HTTP",
   "scripts": {
     "build": "node generate-file-list.js"
