@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://kebabos.me"><img src="static/favicon.png" width="200px" height="auto" /></a>
-  <h1>kebab-tools - v1.10.2</h1>
+  <h1>kebab-tools - v1.11.0</h1>
   <div>
     <a href="https://github.com/kebab-os/kebab-tools/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/kebab-os/kebab-tools?style=flat-square"></a>
     <a href="list.json"><img alt="Tools Count" src="https://img.shields.io/endpoint?style=flat-square&url=https://raw.githubusercontent.com/kebab-os/kebab-tools/main/metrics/tools.json?raw=1&cacheSeconds=3600"></a>
