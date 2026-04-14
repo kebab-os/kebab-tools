@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+import sys
+import requests
+
+BASE_URL = "https://tools.kebabos.me"
+
+HELP_TEXT = """kebab - kebab-tools CLI
+
+Usage:
+  kebab <category> <tool> [arg]    Run a tool
+  kebab list                       List all available tools
+  kebab help [page]                Show help from kebab-tools
+  kebab --help, -h                 Show this help message
+
+Examples:
+  kebab random int
+  kebab random uuid
+  kebab math add 1,2,3
+  kebab text reverse hello-world
+  kebab case upper hello
+  kebab base64 encode hello
+  kebab hash sha256 hello
+  kebab date today
+  kebab convert c-to-f 100
+  kebab url encode https://example.com
+  kebab list
+  kebab help 1
+
+The tool maps your arguments directly to a URL path:
+  kebab random int  →  https://tools.kebabos.me/random/int
+  kebab math add 1,2,3  →  https://tools.kebabos.me/math/add/1,2,3
+"""
+
+
+def run(args):
+    path = "/".join(args)
+    url = f"{BASE_URL}/{path}"
+    try:
+        r = requests.get(url, headers={"User-Agent": "curl/7.81.0"}, timeout=15)
+        if r.status_code == 404:
+            print(f"kebab: unknown tool '{' '.join(args)}'. Run 'kebab list' to see available tools.", file=sys.stderr)
+            sys.exit(1)
+        print(r.text.rstrip())
+    except requests.exceptions.ConnectionError:
+        print("kebab: could not connect to tools.kebabos.me. Check your internet connection.", file=sys.stderr)
+        sys.exit(1)
+    except requests.exceptions.Timeout:
+        print("kebab: request timed out.", file=sys.stderr)
+        sys.exit(1)
+    except requests.exceptions.RequestException as e:
+        print(f"kebab: request failed: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def main():
+    args = sys.argv[1:]
+
+    if not args or args[0] in ("-h", "--help"):
+        print(HELP_TEXT.rstrip())
+        sys.exit(0)
+
+    run(args)
+
+
+if __name__ == "__main__":
+    main()

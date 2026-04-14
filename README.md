@@ -21,6 +21,48 @@ Kebab-tools is a versatile suite of command-line utilities designed for seamless
 
 ## Get started
 
+### CLI Tool (recommended)
+
+Install `kebab` as a system-wide command so you can run tools directly from your terminal:
+
+```bash
+# Download and inspect the script first (recommended)
+curl -fsSL https://raw.githubusercontent.com/kebab-os/kebab-tools/refs/heads/main/install/cli-install.sh -o cli-install.sh
+# Review it, then run:
+sudo bash cli-install.sh
+```
+
+Once installed you can run any tool as a subcommand:
+
+```bash
+kebab random int
+kebab random uuid
+kebab math add 1,2,3
+kebab text reverse hello-world
+kebab case upper hello
+kebab base64 encode hello
+kebab hash sha256 hello
+kebab date today
+kebab convert c-to-f 100
+kebab list          # list all available tools
+kebab --help        # show help
+```
+
+The CLI maps your arguments to a URL path and fetches the result from `https://tools.kebabos.me`:
+
+```
+kebab random int         →  https://tools.kebabos.me/random/int
+kebab math add 1,2,3     →  https://tools.kebabos.me/math/add/1,2,3
+```
+
+Alternatively, you can run the script without installing it:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kebab-os/kebab-tools/refs/heads/main/cli/kebab -o kebab
+chmod +x kebab
+python3 kebab random int
+```
+
 ### Curl (easiest setup)
 
 1. Start by running this bash command in shell:
@@ -75,8 +117,10 @@ If you prefer to use kebab-tools directly through your browser, you can access t
 
 |File/Directory|Description|
 |-|-|
-|[`cs/kebab-tools.py`](cs/kebab-tools.py)|Client shell|
+|[`cli/kebab`](cli/kebab)|CLI tool (`kebab random int`)|
+|[`cs/kebab-tools.py`](cs/kebab-tools.py)|Client shell (interactive REPL)|
 |[`functions`](functions)|All tools|
+|[`install/cli-install.sh`](install/cli-install.sh)|CLI tool install|
 |[`install/client-shell-install.sh`](install/client-shell-install.sh)|Client shell install|
 |[`list.json`](list.json)|List of tools|
 |[`functions/shell-proxy`](functions/shell-proxy)|Node for webshell|
