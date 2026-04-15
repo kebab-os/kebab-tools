@@ -396,6 +396,7 @@
   "functions/system/info.js",
   "functions/system/locale.js",
   "functions/system/request-ip.js",
+  "functions/system/speedtest.js",
   "functions/system/time.js",
   "functions/system/timestamp.js",
   "functions/system/version.js",
