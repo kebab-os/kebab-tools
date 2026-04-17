@@ -9,7 +9,7 @@
     <a href="https://github.com/kebab-os/kebab-tools/commits/main/"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/kebab-os/kebab-tools?style=flat-square"></a>
 </a>
   </div><br />
-  <b>Command line tools via HTTP</b>
+  <b>Endpoint based developer tools</b>
 </div>
 
 ---
