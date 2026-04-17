@@ -1,0 +1,40 @@
+name: Update Date Badge
+
+on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-date:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Create shields directory if needed
+        run: mkdir -p .shields
+      
+      - name: Generate date JSON
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          cat > .shields/date.json << EOF
+          {
+            "schemaVersion": 1,
+            "label": "date",
+            "message": "${DATE}",
+            "color": "blue"
+          }
+          EOF
+      
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .shields/date.json
+          git diff --cached --quiet || git commit -m "Update date badge: $(date +%Y-%m-%d)"
+          git push
