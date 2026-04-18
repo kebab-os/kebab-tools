@@ -145,7 +145,7 @@ Please make sure to update tests as appropriate.
 
 ### Contributors
 
-As of `20/03/2026`, these are the contributors for kebab-tools:
+As of <a href="#"><img alt="Date" src="https://img.shields.io/endpoint?style=flat-square&url=https://raw.githubusercontent.com/kebab-os/kebab-tools/main/.shields/date.json?raw=1&cacheSeconds=3600"></a> these are the contributors for kebab-tools:
 
 - [@7aimez](https://github.com/7aimez) - 7ames
 - [@ethembeldagli](https://github.com/ethembeldagli) - Ethem Beldagli
