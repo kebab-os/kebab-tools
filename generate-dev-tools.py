@@ -5,19 +5,19 @@ ROOT = Path('/home/runner/work/kebab-tools/kebab-tools')
 FUNCTIONS_DIR = ROOT / 'functions' / 'dev'
 TARGET_NEW_TOOLS = 500
 
-TEMPLATE = """export async function onRequest(context) {
-  const { text } = context.params;
+TEMPLATE = """export async function onRequest(context) {{
+  const {{ text }} = context.params;
   const input = (text || '').trim();
-  if (!input) {
-    return new Response('No text provided. Use /dev/{tool}/<text>\\n', {
+  if (!input) {{
+    return new Response('No text provided. Use /dev/{tool}/<text>\\n', {{
       status: 400,
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  }
-  return new Response(`{name}: ${input}\\n`, {
-    headers: { 'Content-Type': 'text/plain' }
-  });
-}
+      headers: {{ 'Content-Type': 'text/plain' }}
+    }});
+  }}
+  return new Response(`{name}: ${{input}}\\n`, {{
+    headers: {{ 'Content-Type': 'text/plain' }}
+  }});
+}}
 """
 
 
@@ -34,7 +34,10 @@ def main() -> None:
 
         if not tool_file.exists():
             tool_dir.mkdir(parents=True, exist_ok=True)
-            tool_file.write_text(TEMPLATE.format(name=tool_name), encoding='utf-8')
+            tool_file.write_text(
+                TEMPLATE.format(name=tool_name, tool=tool_name),
+                encoding='utf-8'
+            )
             created += 1
 
         index += 1
